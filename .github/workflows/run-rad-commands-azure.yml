@@ -44,8 +44,8 @@ env:
   # ${{ vars.RADIUS_BUILD_PLATFORMS || 'linux/amd64,linux/arm64' }}. When a
   # template does not opt in, the unsubstituted placeholder disables the feature
   # and the containerImages recipe's default platforms apply (existing behavior).
-  TARGET_CLUSTER_ARCH_MODE: "${{ vars.RADIUS_BUILD_ARCH_MODE || ''detect'' }}"
-  TARGET_CLUSTER_ARCH_FALLBACK_PLATFORMS: "${{ vars.RADIUS_BUILD_PLATFORMS || ''linux/amd64,linux/arm64'' }}"
+  TARGET_CLUSTER_ARCH_MODE: "${{ vars.RADIUS_BUILD_ARCH_MODE || 'detect' }}"
+  TARGET_CLUSTER_ARCH_FALLBACK_PLATFORMS: "${{ vars.RADIUS_BUILD_PLATFORMS || 'linux/amd64,linux/arm64' }}"
 
 jobs:
   deploy:
@@ -340,6 +340,9 @@ jobs:
         with:
           environment: ${{ inputs.environment }}
           app-file: ${{ env.APP_FILE }}
+
+      - name: Prepare live deployment progress
+        uses: radius-project/radius/.github/extension/actions/deploy-progress/artifact-uploader@main
 
       - name: Run rad commands
         uses: radius-project/radius/.github/extension/actions/run-rad-commands@main
